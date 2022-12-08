@@ -23,6 +23,9 @@ img {
 html {
   font-size: 16px;
 }
+html.active {
+  overflow: hidden !important;
+}
 
 body {
   font-family: "Pretendard", sans-serif;
@@ -78,20 +81,24 @@ body {
   background-size: cover;
   transition: all 0.5s;
 }
+
 /* 스크롤 적용 샘플 */
-.header:hover {
-  height: 80px;
-  background: rgba(255, 255, 255, 1);
+body {
+  height: 5000px;
 }
-.header:hover .logo {
-  background: url("../images/logo.png") no-repeat center;
-  background-size: cover;
+.header.active {
+  height: 80px !important;
+  background: rgba(255, 255, 255, 1) !important;
 }
-.header:hover .gnb a {
+.header.active .logo {
+  background: url("../images/logo.png") no-repeat center !important;
+  background-size: cover !important;
+}
+.header.active .gnb a {
   color: #222 !important;
   line-height: 80px !important;
 }
-.header:hover .gnb a span::after {
+.header.active .gnb a span::after {
   background: #222 !important;
 }
 
@@ -139,6 +146,61 @@ body {
   opacity: 1;
 }
 
+/* 모바일 메뉴 */
+.mbt {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: none;
+
+  width: 30px;
+  height: 22px;
+
+  font-size: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.mbt span {
+  position: absolute;
+  right: 20px;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  transition: background 0.3s;
+}
+.mbt.active span {
+  background: #222 !important;
+}
+
+.mbt span:nth-child(1) {
+  top: 0;
+  transform-origin: 0 50%;
+  transition: transform 0.3s;
+}
+.mbt.ani span:nth-child(1) {
+  transform: rotate(45deg) !important;
+}
+.mbt span:nth-child(2) {
+  top: 50%;
+  transition: opacity 0.3s;
+}
+.mbt.ani span:nth-child(2) {
+  opacity: 0 !important;
+}
+.mbt span:nth-child(3) {
+  top: 100%;
+  transform-origin: 0 50%;
+  transition: transform 0.3s;
+}
+.mbt.ani span:nth-child(3) {
+  transform: rotate(-45deg) !important;
+}
+
 @media screen and (max-width: 1280px) {
   .header {
     padding: 0 30px;
@@ -164,6 +226,10 @@ body {
   }
   .gnb {
     display: none;
+  }
+  /* 모바일 기능 */
+  .mbt {
+    display: block;
   }
 }
 
