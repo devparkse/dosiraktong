@@ -94,6 +94,21 @@ window.onload = function () {
   });
 
   // 비주얼 슬라이드
+  // 슬라이드 갯수 만큼 li 를 생성하기
+  const swSlideCount = document.querySelectorAll(
+    ".sw-visual .swiper-slide"
+  ).length;
+  // li 태그 출력 장소 저장
+  const swVisualPgUl = document.querySelector(".sw-visual-pg-list");
+  let swVisualHtml = ``;
+  for (let i = 0; i < swSlideCount; i++) {
+    swVisualHtml = swVisualHtml + `<li>${i + 1}</li>`;
+  }
+  swVisualPgUl.innerHTML = swVisualHtml;
+
+  // 페이지네이션 관련
+  const swVisualPgLi = document.querySelectorAll(".sw-visual-pg-list > li");
+  // console.log(swVisualPgLi);
   const swiper = new Swiper(".sw-visual", {
     effect: "fade",
     // fadeEffect: {
@@ -109,5 +124,39 @@ window.onload = function () {
       nextEl: ".sw-visual-next",
       prevEl: ".sw-visual-prev",
     },
+  });
+
+  // Swiper 가 최초 실행될 때
+  swVisualPgLi[0].classList.add("active");
+
+  // Swiper 가 바뀔 때마다 실행
+  swiper.on("slideChange", function () {
+    // realIndex 는 진짜 html 태그의 순서값
+    // activeIndex 는 모션이 되는 요소의 순서값
+    // loop: true 라면 2개가 추가된다.
+    //       자연스러운 모션을 위해서 2개가 추가된다.
+    //       realIndex 와 activeIndex 는 갯수가 다르다.
+    // loop: false 라면
+    //       realIndex 와 activeIndex 는 갯수가 같다.
+
+    console.log("slide changed", swiper.realIndex, swiper.activeIndex);
+    swVisualPgLi.forEach((item, index) => {
+      // console.log(item, index);
+      if (swiper.realIndex === index) {
+        // 같은 순서는 모션을 하라
+        item.classList.add("active");
+      } else {
+        // 다른 순서는 모션을 제거하라
+        item.classList.remove("active");
+      }
+    });
+  });
+  // li 태그를 클릭하면 처리하기
+  swVisualPgLi.forEach((item, index) => {
+    item.addEventListener("click", function () {
+      // slideTo 를 이용하면 원하는 페이지로 보낼 수 있다.
+      // slideTo(index, speed, runCallbacks)
+      swiper.slideTo(index, 0, false);
+    });
   });
 };
