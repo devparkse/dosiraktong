@@ -94,19 +94,24 @@ window.onload = function () {
   });
 
   // 비주얼 슬라이드
-  // 슬라이드 갯수 만큼 li 를 생성하기
+  // 1. 슬라이드(.swiper-slide) 갯수 만큼 li 를 생성하기
   const swSlideCount = document.querySelectorAll(
     ".sw-visual .swiper-slide"
   ).length;
-  // li 태그 출력 장소 저장
+
+  // 2. li 태그 출력 장소(ul 태그) 저장
   const swVisualPgUl = document.querySelector(".sw-visual-pg-list");
+
+  // 3. li 에 html 로 작성할 글자를 생성한다.
   let swVisualHtml = ``;
   for (let i = 0; i < swSlideCount; i++) {
     swVisualHtml = swVisualHtml + `<li>${i + 1}</li>`;
   }
+
+  // 4. html 을 추가해준다.
   swVisualPgUl.innerHTML = swVisualHtml;
 
-  // 페이지네이션 관련
+  // 5. 페이지네이션 관련 (코딩으로 생성한 li 태그 저장)
   const swVisualPgLi = document.querySelectorAll(".sw-visual-pg-list > li");
   // console.log(swVisualPgLi);
   const swiper = new Swiper(".sw-visual", {
@@ -115,9 +120,13 @@ window.onload = function () {
     //   crossFade: true,
     // },
     loop: true,
-    speed: 1000,
+    // 슬라이드의 모션 속도를 transition 과 맞춘다.
+    speed: 1500,
     autoplay: {
       delay: 2500,
+      // 사용자가 마우스 클릭 드래그로 이동하면
+      // 아래 구문이 없으면 autoplay 가 해제되므로
+      // 이것을 방지해주기 위한 처리. 필수로 적어주기
       disableOnInteraction: false,
     },
     navigation: {
@@ -127,9 +136,13 @@ window.onload = function () {
   });
 
   // Swiper 가 최초 실행될 때
+  // 1번 li 의 흰색 라인이 늘어나는 모션을 실행
   swVisualPgLi[0].classList.add("active");
 
   // Swiper 가 바뀔 때마다 실행
+  // 슬라이더가 바뀌는 상태를 찾아서
+  // 우리가 적용하고자 하는 처리를 하고자 할 때
+  // Swiper 의 API 를 참조해서 작성
   swiper.on("slideChange", function () {
     // realIndex 는 진짜 html 태그의 순서값
     // activeIndex 는 모션이 되는 요소의 순서값
@@ -139,7 +152,9 @@ window.onload = function () {
     // loop: false 라면
     //       realIndex 와 activeIndex 는 갯수가 같다.
 
-    console.log("slide changed", swiper.realIndex, swiper.activeIndex);
+    // console.log("slide changed", swiper.realIndex, swiper.activeIndex);
+    // li 태그를 모두 초기화 한다.
+    // 현재 모션이 일어나는 슬라이드 번호(realIndex)에 클래스 적용해준다.
     swVisualPgLi.forEach((item, index) => {
       // console.log(item, index);
       if (swiper.realIndex === index) {
@@ -154,9 +169,9 @@ window.onload = function () {
   // li 태그를 클릭하면 처리하기
   swVisualPgLi.forEach((item, index) => {
     item.addEventListener("click", function () {
-      // slideTo 를 이용하면 원하는 페이지로 보낼 수 있다.
-      // slideTo(index, speed, runCallbacks)
-      swiper.slideTo(index, 0, false);
+      // slideToLoop 를 이용하면 원하는 페이지로 보낼 수 있다.
+      // slideToLoop(index, speed, runCallbacks)
+      swiper.slideToLoop(index, 500, false);
     });
   });
 };
