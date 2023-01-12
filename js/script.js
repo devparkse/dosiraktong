@@ -194,4 +194,43 @@ window.onload = function () {
   businessModal.addEventListener("click", function () {
     businessModal.style.display = "none";
   });
+
+  // 위로가기 스크롤바 구현
+  const gotop = document.querySelector(".gotop");
+  gotop.addEventListener("click", function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
+  // footer 의 상단 위치 픽셀값 파악
+  let footer = document.querySelector(".footer");
+  let footerY = footer.offsetTop;
+  // console.log(footerY);
+
+  function moveGotop() {
+    if (scy < 450) {
+      gotop.classList.remove("active");
+    } else {
+      gotop.classList.add("active");
+    }
+    // 세로 위치값 변경
+    if (footerY - 400 < scy) {
+      gotop.classList.add("active-footer");
+    } else {
+      gotop.classList.remove("active-footer");
+    }
+  }
+  moveGotop();
+
+  window.addEventListener("resize", function () {
+    footerY = footer.offsetTop;
+  });
+
+  window.addEventListener("scroll", function () {
+    // 스크롤 이동 픽셀값
+    scy = this.document.documentElement.scrollTop;
+    moveGotop();
+  });
 };
